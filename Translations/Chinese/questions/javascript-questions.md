@@ -3,28 +3,11 @@
 本章节是[前端开发者面试问题 - JS 部分](https://github.com/h5bp/Front-end-Developer-Interview-Questions/blob/master/questions/javascript-questions.md)的参考答案。 欢迎提出 PR 进行建议和指正！
 
 * [说说你对 AMD 和 CommonJS 的了解。](#说说你对-amd-和-commonjs-的了解)
-* [请解释下面代码为什么不能用作 IIFE：`function foo(){ }();`，需要作出哪些修改才能使其成为 IIFE？](#请解释下面代码为什么不能用作-iifefunction-foo-需要作出哪些修改才能使其成为-iife)
-* [`null`、`undefined`和未声明变量之间有什么区别？如何检查判断这些状态值？](#nullundefined和未声明变量之间有什么区别如何检查判断这些状态值)
-* [什么是闭包（closure），为什么使用闭包？](#什么是闭包closure为什么使用闭包)
-* [请说明`.forEach`循环和`.map()`循环的主要区别，它们分别在什么情况下使用？](#请说明foreach循环和map循环的主要区别它们分别在什么情况下使用)
-* [匿名函数的典型应用场景是什么？](#匿名函数的典型应用场景是什么)
-* [你如何组织自己的代码？（使用模块模式（module pattern）还是经典继承（classical inheritance）？）](#你如何组织自己的代码使用模块模式module-pattern还是经典继承classical-inheritance)
-* [宿主对象（host objects）和原生对象（native objects）的区别是什么？](#宿主对象host-objects和原生对象native-objects的区别是什么)
-* [下列语句有什么区别：`function Person(){}`、`var person = Person()`和`var person = new Person()`？](#下列语句有什么区别function-personvar-person--person和var-person--new-person)
-* [`.call`和`.apply`有什么区别？](#call和apply有什么区别)
-* [请说明`Function.prototype.bind`的用法。](#请说明functionprototypebind的用法)
-* [什么时候会用到`document.write()`？](#什么时候会用到documentwrite)
 * [功能检测（feature detection）、功能推断（feature inference）和使用 UA 字符串之间有什么区别？](#功能检测feature-detection功能推断feature-inference和使用-ua-字符串之间有什么区别)
 * [请尽可能详细地解释 Ajax。](#请尽可能详细地解释-ajax)
 * [使用 Ajax 的优缺点分别是什么？](#使用ajax的优缺点分别是什么)
 * [请说明 JSONP 的工作原理，它为什么不是真正的 Ajax？](#请说明-jsonp-的工作原理它为什么不是真正的-ajax)
 * [你使用过 JavaScript 模板吗？用过什么相关的库？](#你使用过-javascript-模板吗用过什么相关的库)
-* [请解释变量提升（hoisting）。](#请解释变量提升hoisting)
-* [请描述事件冒泡。](#请描述事件冒泡)
-* [“attribute” 和 “property” 之间有什么区别？](#attribute-和-property-之间有什么区别)
-* [为什么扩展 JavaScript 内置对象是不好的做法？](#为什么扩展-javascript-内置对象是不好的做法)
-* [document 中的`load`事件和`DOMContentLoaded`事件之间的区别是什么？](#document-中的load事件和domcontentloaded事件之间的区别是什么)
-* [`==`和`===`的区别是什么？](#和的区别是什么)
 * [请解释关于 JavaScript 的同源策略。](#请解释关于-javascript-的同源策略)
 * [请使下面的语句生效：](#请使下面的语句生效)
 
@@ -141,51 +124,6 @@ console.log(foo); // undefined
 
 [[↑] 回到顶部](#js-问题)
 
-### `null`、`undefined`和未声明变量之间有什么区别？如何检查判断这些状态值？
-
-当你没有提前使用`var`、`let`或`const`声明变量，就为一个变量赋值时，该变量是未声明变量（undeclared variables）。未声明变量会脱离当前作用域，成为全局作用域下定义的变量。在严格模式下，给未声明的变量赋值，会抛出`ReferenceError`错误。和使用全局变量一样，使用未声明变量也是非常不好的做法，应当尽可能避免。要检查判断它们，需要将用到它们的代码放在`try`/`catch`语句中。
-
-```js
-function foo() {
-  x = 1; // 在严格模式下，抛出 ReferenceError 错误
-}
-
-foo();
-console.log(x); // 1
-```
-
-当一个变量已经声明，但没有赋值时，该变量的值是`undefined`。如果一个函数的执行结果被赋值给一个变量，但是这个函数却没有返回任何值，那么该变量的值是`undefined`。要检查它，需要使用严格相等（`===`）；或者使用`typeof`，它会返回`'undefined'`字符串。请注意，不能使用非严格相等（`==`）来检查，因为如果变量值为`null`，使用非严格相等也会返回`true`。
-
-```js
-var foo;
-console.log(foo); // undefined
-console.log(foo === undefined); // true
-console.log(typeof foo === 'undefined'); // true
-
-console.log(foo == null); // true. 错误，不要使用非严格相等！
-
-function bar() {}
-var baz = bar();
-console.log(baz); // undefined
-```
-
-`null`只能被显式赋值给变量。它表示`空值`，与被显式赋值 `undefined` 的意义不同。要检查判断`null`值，需要使用严格相等运算符。请注意，和前面一样，不能使用非严格相等（`==`）来检查，因为如果变量值为`undefined`，使用非严格相等也会返回`true`。
-
-```js
-var foo = null;
-console.log(foo === null); // true
-
-console.log(foo == undefined); // true. 错误，不要使用非严格相等！
-```
-
-作为一种个人习惯，我从不使用未声明变量。如果定义了暂时没有用到的变量，我会在声明后明确地给它们赋值为`null`。
-
-###### 参考
-
-* https://stackoverflow.com/questions/15985875/effect-of-declared-and-undeclared-variables
-* https://developer.mozilla.org/en/docs/Web/JavaScript/Reference/Global_Objects/undefined
-
-[[↑] 回到顶部](#js-问题)
 
 ### 什么是闭包（closure），为什么使用闭包？
 
