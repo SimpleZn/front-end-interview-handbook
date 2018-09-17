@@ -2,9 +2,6 @@
 
 本章节是[前端开发者面试问题 - JS 部分](https://github.com/h5bp/Front-end-Developer-Interview-Questions/blob/master/questions/javascript-questions.md)的参考答案。 欢迎提出 PR 进行建议和指正！
 
-* [请解释事件委托（event delegation）。](#请解释事件委托event-delegation)
-* [请简述`JavaScript`中的`this`。](#请简述javascript中的this)
-* [请解释原型继承（prototypal inheritance）的工作原理。](#请解释原型继承prototypal-inheritance的工作原理)
 * [说说你对 AMD 和 CommonJS 的了解。](#说说你对-amd-和-commonjs-的了解)
 * [请解释下面代码为什么不能用作 IIFE：`function foo(){ }();`，需要作出哪些修改才能使其成为 IIFE？](#请解释下面代码为什么不能用作-iifefunction-foo-需要作出哪些修改才能使其成为-iife)
 * [`null`、`undefined`和未声明变量之间有什么区别？如何检查判断这些状态值？](#nullundefined和未声明变量之间有什么区别如何检查判断这些状态值)
